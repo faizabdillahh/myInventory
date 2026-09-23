@@ -1,0 +1,804 @@
+/**
+ * ==============================================================================
+ * FILE: assets/css/style.css
+ * DESKRIPSI: Desain Antarmuka Mobile-First & Fully Responsive (Enterprise Minimal)
+ * ==============================================================================
+ * Paradigma Desain:
+ * 1. Mobile-First: Seluruh styling dasar (tanpa media query) dirancang khusus
+ *    untuk layar ponsel (layar 320px - 639px).
+ * 2. Progressive Enhancement: Menggunakan @media (min-width: ...) untuk memperluas
+ *    tata letak ke tablet dan desktop tanpa merusak pengalaman di layar kecil.
+ * 3. Accessibility & Touch Targets: Tombol dan form control minimal 40px - 44px
+ *    agar mudah ditekan dengan ibu jari di ponsel tanpa mis-tap.
+ * 4. Mencegah auto-zoom mobile pada input (font-size minimum 16px saat mobile input focus).
+ * 5. 100% Bebas Emoji dan Elemen Klise AI Slop.
+ */
+
+/* -----------------------------------------------------------------------------
+ * 1. DESIGN TOKENS & SYSTEM VARIABLES
+ * -------------------------------------------------------------------------- */
+:root {
+    /* Brand & Warna Utama */
+    --accent: #0f172a;
+    --accent-hover: #1e293b;
+    --accent-subtle: #f1f5f9;
+    --primary-blue: #2563eb;
+    --primary-blue-hover: #1d4ed8;
+
+    /* Status Fungsional */
+    --status-success-bg: #f0fdf4;
+    --status-success-text: #166534;
+    --status-success-border: #bbf7d0;
+
+    --status-warning-bg: #fffbeb;
+    --status-warning-text: #92400e;
+    --status-warning-border: #fde68a;
+
+    --status-danger-bg: #fef2f2;
+    --status-danger-text: #991b1b;
+    --status-danger-border: #fecaca;
+
+    /* Latar Belakang & Permukaan */
+    --bg-app: #f8fafc;
+    --surface: #ffffff;
+    --surface-subtle: #f8fafc;
+    --surface-hover: #f1f5f9;
+
+    /* Garis & Border */
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+    --border-focus: #0f172a;
+
+    /* Teks */
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-subtle: #94a3b8;
+    --text-inverse: #ffffff;
+
+    /* Radius Sudut */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+
+    /* Bayangan Halus */
+    --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-panel: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+    /* Durasi Transisi */
+    --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* -----------------------------------------------------------------------------
+ * 2. RESET & BASE ELEMENTS (MOBILE-FIRST)
+ * -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-main);
+    background-color: var(--bg-app);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* -----------------------------------------------------------------------------
+ * 3. LAYOUT CONTAINER & NAVBAR (MOBILE-FIRST)
+ * -------------------------------------------------------------------------- */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 14px; /* Padding tepi kompak di mobile */
+}
+
+.navbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 52px; /* Ringkas di ponsel */
+    gap: 8px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+}
+
+.brand-icon {
+    width: 26px;
+    height: 26px;
+    background: var(--accent);
+    color: var(--text-inverse);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    max-width: 130px;
+}
+
+.user-badge span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-avatar {
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    color: var(--text-inverse);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* -----------------------------------------------------------------------------
+ * 4. TOMBOL-TOMBOL (BUTTONS) - Touch-Friendly Targets
+ * -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px; /* Target sentuh ramah jari */
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.25;
+    transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 1px;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: var(--text-inverse);
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.btn-secondary {
+    background-color: var(--surface);
+    color: var(--text-main);
+    border-color: var(--border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--surface-hover);
+    border-color: #cbd5e1;
+}
+
+.btn-danger {
+    background-color: #dc2626;
+    color: var(--text-inverse);
+    border-color: #dc2626;
+}
+
+.btn-danger:hover {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+}
+
+.btn-sm {
+    min-height: 32px;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0;
+    border-radius: var(--radius-md);
+}
+
+/* Tombol full-width di mobile */
+.btn-block-mobile {
+    width: 100%;
+}
+
+/* -----------------------------------------------------------------------------
+ * 5. KARTU & PANEL KONTEN
+ * -------------------------------------------------------------------------- */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-panel);
+    padding: 16px; /* Kompak di mobile */
+    margin-bottom: 16px;
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+}
+
+.card-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.card-header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.card-header-actions .btn {
+    width: 100%;
+}
+
+/* -----------------------------------------------------------------------------
+ * 6. WIDGET STATISTIK (MOBILE-FIRST: 2x2 GRID COMPACT)
+ * -------------------------------------------------------------------------- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom di mobile */
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column; /* Vertikal di ponsel agar angka tidak terhimpit */
+    gap: 8px;
+    box-shadow: var(--shadow-subtle);
+}
+
+.stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-val {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    word-break: break-word;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+/* -----------------------------------------------------------------------------
+ * 7. FORMULIR & INPUT CONTROLS (MOBILE-FIRST)
+ * -------------------------------------------------------------------------- */
+.form-card {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.form-control {
+    width: 100%;
+    min-height: 40px; /* Jari sentuh nyaman */
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-main);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* Grid form di mobile: 1 kolom penuh */
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Form Actions di Mobile: Tombol utama Simpan di atas, Batal di bawah */
+.form-actions {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    width: 100%;
+}
+
+.form-actions .btn {
+    width: 100%;
+}
+
+/* Kolom Pencarian di Mobile: 100% Lebar */
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 12px 7px 34px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 13px;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-subtle);
+    pointer-events: none;
+}
+
+/* -----------------------------------------------------------------------------
+ * 8. TABEL DATA (HORIZONTAL SCROLL WITH MOMENTUM ON MOBILE)
+ * -------------------------------------------------------------------------- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Momentum smooth scrolling di smartphone */
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+
+.table {
+    width: 100%;
+    min-width: 600px; /* Mencegah kolom terjepit di layar sempit ponsel */
+    border-collapse: collapse;
+    text-align: left;
+    background: var(--surface);
+    font-size: 13px;
+}
+
+.table th {
+    background-color: var(--surface-subtle);
+    padding: 10px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+    color: var(--text-main);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: var(--surface-hover);
+}
+
+/* Status Badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.badge-success {
+    background: var(--status-success-bg);
+    color: var(--status-success-text);
+    border-color: var(--status-success-border);
+}
+
+.badge-warning {
+    background: var(--status-warning-bg);
+    color: var(--status-warning-text);
+    border-color: var(--status-warning-border);
+}
+
+.badge-danger {
+    background: var(--status-danger-bg);
+    color: var(--status-danger-text);
+    border-color: var(--status-danger-border);
+}
+
+.badge-primary {
+    background: #f1f5f9;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+/* -----------------------------------------------------------------------------
+ * 9. HALAMAN AUTENTIKASI (LOGIN & REGISTER MOBILE-FIRST)
+ * -------------------------------------------------------------------------- */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px; /* Nyaman di ponsel */
+    background-color: var(--bg-app);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-panel);
+    border: 1px solid var(--border);
+    padding: 24px 18px; /* Kompak di mobile */
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 8px;
+    letter-spacing: -0.01em;
+}
+
+.auth-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.info-box {
+    margin-top: 16px;
+    padding: 10px 12px;
+    background: var(--surface-subtle);
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+/* -----------------------------------------------------------------------------
+ * 10. NOTIFIKASI ALERTS
+ * -------------------------------------------------------------------------- */
+.alert {
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: var(--status-success-bg);
+    color: var(--status-success-text);
+    border-color: var(--status-success-border);
+}
+
+.alert-danger {
+    background-color: var(--status-danger-bg);
+    color: var(--status-danger-text);
+    border-color: var(--status-danger-border);
+}
+
+/* -----------------------------------------------------------------------------
+ * 11. MODAL DIALOG (MOBILE-FIRST BOTTOM/CENTER POPUP)
+ * -------------------------------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition), visibility var(--transition);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-modal);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.modal-actions .btn {
+    width: 100%;
+}
+
+/* -----------------------------------------------------------------------------
+ * 12. FOOTER
+ * -------------------------------------------------------------------------- */
+.footer {
+    margin-top: auto;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 16px 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* =============================================================================
+ * 13. PROGRESSIVE ENHANCEMENT: TABLET & DESKTOP (min-width BREAKPOINTS)
+ * ============================================================================= */
+
+/* SM: Layar Tablet Kecil / Lanskap Ponsel (min-width: 640px) */
+@media (min-width: 640px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .navbar-inner {
+        height: 56px;
+    }
+
+    .brand {
+        font-size: 15px;
+    }
+
+    .brand-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .user-badge {
+        max-width: 200px;
+    }
+
+    .card {
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .card-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header-actions {
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+    }
+
+    .card-header-actions .btn {
+        width: auto;
+    }
+
+    .search-wrapper {
+        max-width: 280px;
+    }
+
+    .stat-card {
+        flex-direction: row;
+        align-items: center;
+        padding: 16px 18px;
+        gap: 14px;
+    }
+
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .stat-val {
+        font-size: 20px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .form-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .form-actions .btn {
+        width: auto;
+    }
+
+    .modal-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .modal-actions .btn {
+        width: auto;
+    }
+
+    .auth-card {
+        padding: 32px 28px;
+    }
+}
+
+/* MD: Layar Tablet / Desktop Menengah (min-width: 768px) */
+@media (min-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .table {
+        min-width: 100%; /* Lebar penuh fleksibel di desktop */
+    }
+
+    .table th, .table td {
+        padding: 11px 14px;
+    }
+}
+
+/* LG: Layar Komputer / Monitor Luas (min-width: 1024px) */
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 24px;
+    }
+}
