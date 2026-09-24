@@ -1,0 +1,30 @@
+{
+  "name": "web-inventory",
+  "version": "1.0.0",
+  "description": "CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure. More information can be found at the [official site](https://codeigniter.com).",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i public/assets/css/src/input.css -o public/assets/css/tailwind.min.css --minify",
+    "watch:css": "tailwindcss -i public/assets/css/src/input.css -o public/assets/css/tailwind.min.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faizabdillahh/myInventory.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/faizabdillahh/myInventory/issues"
+  },
+  "homepage": "https://github.com/faizabdillahh/myInventory#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

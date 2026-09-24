@@ -1,0 +1,744 @@
+/**
+ * ==============================================================================
+ * FILE: assets/css/style.css
+ * DESKRIPSI: Enterprise Custom Styles, Modal Transitions & Print Optimization
+ * ==============================================================================
+ * Catatan:
+ * Seluruh utilitas tata letak, grid responsif, tipografi, dan pewarnaan utama 
+ * kini telah didelegasikan secara terpadu ke engine resmi Tailwind CSS v4.
+ * File ini didedikasikan secara khusus untuk:
+ * 1. CSS Custom Properties / System Variables.
+ * 2. Transisi & Aksesibilitas Modal Backdrop Dialog.
+ * 3. Kustomisasi Scrollbar & Smooth Scrolling.
+ * 4. Aturan Cetak Laporan Formal (@media print) siap audit & PDF.
+ */
+
+/* -----------------------------------------------------------------------------
+ * 1. DESIGN TOKENS & SYSTEM VARIABLES
+ * -------------------------------------------------------------------------- */
+:root {
+    /* Brand & Aksen */
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-subtle: #eef2ff;
+
+    /* Status Semantik Fungsional */
+    --status-success-bg: #ecfdf5;
+    --status-success-text: #047857;
+    --status-success-border: #a7f3d0;
+
+    --status-warning-bg: #fffbeb;
+    --status-warning-text: #b45309;
+    --status-warning-border: #fde68a;
+
+    --status-danger-bg: #fef2f2;
+    --status-danger-text: #b91c1c;
+    --status-danger-border: #fecaca;
+
+    /* Transisi Halus */
+    --transition: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* -----------------------------------------------------------------------------
+ * 2. SMOOTH SCROLLING & CUSTOM SCROLLBAR
+ * -------------------------------------------------------------------------- */
+html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Scrollbar Modern Halus untuk Tabel & Kontainer */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* -----------------------------------------------------------------------------
+ * 3. MODAL OVERLAY & DIALOG BACKDROP (TRANSISI HALUS)
+ * -------------------------------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition), visibility var(--transition);
+}
+
+.modal-overlay.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.modal-overlay.active .modal-box {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-box {
+    transform: scale(0.96);
+    opacity: 0;
+    transition: transform var(--transition), opacity var(--transition);
+}
+
+/* Backdrop konfirmasi alternatif (Pelanggan) */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+}
+
+/* -----------------------------------------------------------------------------
+ * 4. ATURAN CETAK DOKUMEN & LAPORAN (@media print)
+ * -------------------------------------------------------------------------- */
+@media print {
+    /* Elemen yang wajib disembunyikan saat mencetak */
+    header,
+    footer,
+    nav,
+    .navbar,
+    .no-print,
+    .report-tabs,
+    .btn,
+    button,
+    form,
+    .modal-overlay,
+    .modal-backdrop,
+    #mobileNavDrawer {
+        display: none !important;
+    }
+
+    /* Format kertas cetak bersih */
+    body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        font-size: 10pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        padding: 12px !important;
+        margin-bottom: 16px !important;
+        break-inside: avoid;
+    }
+
+    .table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    .table th, 
+    .table td {
+        border: 1px solid #e2e8f0 !important;
+        padding: 6px 8px !important;
+        color: #0f172a !important;
+        font-size: 9pt !important;
+    }
+
+    .stat-card {
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * 5. ENTERPRISE UI TOKENS & MICRO-INTERACTIONS
+ * -------------------------------------------------------------------------- */
+/* Badge Keyboard Shortcut Kbd (Linear / GitHub Style) */
+.kbd-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    color: #64748b;
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 2px 6px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    user-select: none;
+    pointer-events: none;
+    transition: all 150ms ease;
+}
+
+/* Pulse Dot Semantik untuk Status Kritis */
+.pulse-dot {
+    position: relative;
+    display: inline-flex;
+    height: 8px;
+    width: 8px;
+    border-radius: 9999px;
+}
+
+.pulse-dot::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    background-color: inherit;
+    animation: pingDot 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    opacity: 0.75;
+}
+
+@keyframes pingDot {
+    75%, 100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* Currency Input Group Prefix */
+.currency-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+
+.currency-prefix {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-right: none;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    user-select: none;
+}
+
+.currency-input-field {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+/* Breadcrumbs Separator & Links */
+.breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.breadcrumb-nav a {
+    color: #64748b;
+    font-weight: 500;
+    transition: color 150ms ease;
+}
+
+.breadcrumb-nav a:hover {
+    color: #4f46e5;
+}
+
+.breadcrumb-nav .separator {
+    color: #cbd5e1;
+}
+
+.breadcrumb-nav .current {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* -----------------------------------------------------------------------------
+ * 7. MICRO PROGRESS BAR STOK (KATANA & LINEAR STYLE)
+ * -------------------------------------------------------------------------- */
+.stock-meter-track {
+    width: 100%;
+    height: 6px;
+    background-color: #f1f5f9;
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.stock-meter-fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stock-meter-fill.normal {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.stock-meter-fill.warning {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.stock-meter-fill.danger {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* -----------------------------------------------------------------------------
+ * 8. APPLE HUMAN INTERFACE GUIDELINES (HIG) - MOBILE UI ARCHITECTURE
+ * -------------------------------------------------------------------------- */
+
+/* Safe area padding for mobile main container */
+@media (max-width: 767px) {
+    main {
+        padding-bottom: 84px !important;
+    }
+}
+
+/* Translucent Frosted Glass Top Navigation Bar */
+.ios-nav-blur {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Apple iOS Tab Bar (Fixed Bottom Dock) */
+.mobile-bottom-dock {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 58px !important;
+    z-index: 50 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.12) !important;
+    padding-bottom: max(0.25rem, env(safe-area-inset-bottom)) !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    box-sizing: border-box !important;
+}
+
+@media (min-width: 768px) {
+    .mobile-bottom-dock {
+        display: none !important;
+    }
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #8e8e93;
+    transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 52px;
+    min-height: 44px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item.active {
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+.bottom-nav-item:active {
+    transform: scale(0.92);
+}
+
+.bottom-nav-center-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-top: -16px;
+    border-radius: 9999px;
+    background: #4f46e5;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+    transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+    cursor: pointer;
+}
+
+.bottom-nav-center-btn:active {
+    transform: scale(0.92);
+}
+
+/* Apple 2x2 Metric Widget Grid (Compact Apple Health / iOS Widget Style) */
+.stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+}
+
+@media (min-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+    }
+}
+
+/* Apple iOS Slide-over Sheet (Mobile Drawer) */
+.ios-drawer-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    background: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms cubic-bezier(0.32, 0.72, 0, 1), visibility 300ms;
+}
+
+.ios-drawer-overlay.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.ios-drawer-panel {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 290px !important;
+    max-width: 85% !important;
+    height: 100vh !important;
+    background: #ffffff !important;
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15) !important;
+    transform: translateX(100%) !important;
+    transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    z-index: 10000 !important;
+}
+
+.ios-drawer-overlay.active .ios-drawer-panel {
+    transform: translateX(0) !important;
+}
+
+/* Apple iOS Segmented Control */
+.ios-segmented-control {
+    background-color: #f1f5f9;
+    padding: 3px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.ios-segmented-control::-webkit-scrollbar {
+    display: none;
+}
+
+.ios-segmented-item {
+    padding: 6px 12px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+    text-decoration: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ios-segmented-item.active {
+    background-color: #ffffff;
+    color: #0f172a;
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Apple iOS Inset Grouped Table View */
+.ios-grouped-list {
+    border-radius: 16px;
+    background: #ffffff;
+    border: 0.5px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+.ios-list-row {
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    transition: background-color 150ms ease;
+    text-decoration: none;
+}
+
+.ios-list-row:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 58px;
+    right: 0;
+    height: 0.5px;
+    background-color: #f1f5f9;
+}
+
+.ios-list-row:active {
+    background-color: #f8fafc;
+}
+
+/* Apple Status Badges */
+.ios-badge-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ios-badge-warning {
+    background-color: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ios-badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* =========================================================================
+ * Apple iOS Search Bar Component System
+ * ========================================================================= */
+.ios-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.ios-search-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    color: #94a3b8;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.ios-search-input {
+    width: 100%;
+    height: 38px;
+    padding-left: 36px !important;
+    padding-right: 32px !important;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1e293b;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    outline: none;
+    transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-search-input::placeholder {
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.ios-search-input:focus {
+    background-color: #ffffff;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.ios-search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    border-radius: 9999px;
+    background-color: #cbd5e1;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 150ms ease;
+    z-index: 2;
+}
+
+.ios-search-clear:hover {
+    background-color: #94a3b8;
+}
+
+/* -----------------------------------------------------------------------------
+ * 9. TOAST NOTIFIKASI FEEDBACK CEPAT (COPY TOAST)
+ * -------------------------------------------------------------------------- */
+#appToastContainer {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+@media (max-width: 640px) {
+    #appToastContainer {
+        bottom: 80px;
+        left: 16px;
+        right: 16px;
+    }
+}
+
+.app-toast {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background-color: #0f172a;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3), 0 8px 10px -6px rgba(15, 23, 42, 0.2);
+    animation: toastSlideUp 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    pointer-events: auto;
+}
+
+@keyframes toastSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * 10. BARCODE MODAL PREVIEW & PRINT STIKER LABEL
+ * -------------------------------------------------------------------------- */
+.barcode-svg-container {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media print {
+    .no-print, header, footer, .mobile-bottom-dock, .card-header-actions, .stats-grid {
+        display: none !important;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * 11. RESPONSIVE VIEW TOGGLES (DESKTOP TABLE VS MOBILE INSET GROUPED LIST)
+ * -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    .desktop-table-view {
+        display: none !important;
+    }
+    .mobile-grouped-view {
+        display: block !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .desktop-table-view {
+        display: block !important;
+    }
+    .mobile-grouped-view {
+        display: none !important;
+    }
+}
+
+
